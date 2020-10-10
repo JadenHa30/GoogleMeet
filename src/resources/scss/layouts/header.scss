@@ -1,0 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Sansita+Swashed&display=swap");
+.logo {
+  .icon {
+    width: 55px;
+  }
+  span {
+    font-family: "Sansita Swashed", cursive;
+    font-size: 40px;
+    color: #fff;
+    text-shadow: 2px 2px 4px $primary-color;
+  }
+  p {
+    font-family: "Sansita Swashed", cursive;
+    font-size: 26px;
+    padding-left: 12px;
+  }
+}
