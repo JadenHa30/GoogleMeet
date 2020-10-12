@@ -1,0 +1,42 @@
+.camera {
+  position: relative;
+  #localStream {
+    width: 100%;
+    height: 50%;
+    border-radius: 10px;
+  }
+  .wrap-btn-call {
+    display: none;
+    .btn-call {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: solid 1px #c1c1c1;
+      outline: none;
+      background-color: transparent;
+      position: absolute;
+      bottom: 5%;
+      i {
+        color: #fff;
+      }
+    }
+    .mute {
+      left: 35%;
+      transform: translate(-50%, 0);
+    }
+    .stop {
+      left: 50%;
+      transform: translate(-50%, 0);
+      i {
+        color: #ff0000;
+      }
+    }
+    .hideCam {
+      left: 65%;
+      transform: translate(-50%, 0);
+    }
+  }
+  &:hover .wrap-btn-call {
+    display: block;
+  }
+}

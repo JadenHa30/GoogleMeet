@@ -31,50 +31,69 @@
 
         <!-- -- --------------------MAIN-------------------- -- -->
         <main class="container mt-5">
-            <div class="home d-flex justify-content-center">
-                <div class="">
-                    <h1>Premium video meetings. Now free for everyone.</h1>
-                    <p>We re-engineered the service we built for secure business meetings, Google Meet, to make it free
-                        and
-                        available for all.</p>
-
-                    <div class="dropdown">
-                        <button class="btn btn-custom" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-video"></i> New
-                            meeting
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" id="getIdMeeting" href="#"><i class="fas fa-paperclip"></i> Get link to share</a>
-                            <a class="dropdown-item" id="newMeeting" href="#"><i class="fas fa-plus"></i> Start instant meeting</a>
+            <div class="home">
+                <div class="d-flex justify-content-center">
+                    <div class="">
+                        <h1>Premium video meetings. Now free for everyone.</h1>
+                        <p>We re-engineered the service we built for secure business meetings, Google Meet, to make it free
+                            and
+                            available for all.</p>
+    
+                        
+                        <div class="dropdown">
+                            <button class="btn btn-custom" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-video"></i> New
+                                meeting
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" id="getIdMeeting" href="#"><i class="fas fa-paperclip"></i> Get link to share</a>
+                                <a class="dropdown-item" id="newMeeting"><i class="fas fa-plus"></i>Start instant meeting</a>
+                            </div>
+                        </div>
+                        
+    
+                        <form id="joinForm" method="GET">
+                            <input type="text" class="input-group input-custom pt-1 pb-2" id="inputId"
+                            placeholder="Enter meeting ID">
+                            <button class="btn btn-custom" id="join">Join</button>
+                        </form>
+                    </div>
+                    <div class="p-4 w-100">
+                        <div class="tablet p-4">
+                            <img src="/img/tablet.jpg" class="img-fluid rounded mx-auto d-block" alt="tablet">
                         </div>
                     </div>
-
-                    <input type="text" class="input-group input-custom pt-1 pb-2" id="inputId"
-                        placeholder="Enter meeting ID">
-                    <button class="btn btn-custom" id="join">Join</button>
                 </div>
-                <div class="p-4 w-100">
-                    <div class="tablet p-4">
-                        <img src="/img/tablet.jpg" class="img-fluid rounded mx-auto d-block" alt="tablet">
+            </div>
+
+
+            <!-- <form method="GET" id="createRoom"> -->
+                <div class="waiting" style="display: none;">
+                    <div class="d-flex justify-content-center">
+                        <div class="camera m-auto">
+                            <video id="localStream"></video>
+                            <div class="wrap-btn-call">
+                                <button class="btn-call mute">
+                                    <i class="fas fa-microphone-slash" style="display: none;"></i>
+                                    <i class="fas fa-microphone"></i>
+                                </button>
+                                <button class="btn-call stop">
+                                    <i class="fas fa-phone-alt"></i>
+                                </button>
+                                <button class="btn-call hideCam">
+                                    <i class="fas fa-video"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="info text-center m-auto pl-5">
+                            <h2>Meeting ready</h2>
+                            <div id="meetingId"></div>
+                            <button class="btn btn-custom" id="joinMeeting">Join</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="waiting d-flex justify-content-center">
-                <div class="camera">
-                    <video width=500 id="localStream" controls></video>
-                </div>
-                <div class="info">
-                    <h2>Meeting ready</h2>
-                    <p id="meetingId"></p>
-                    <button class="btn btn-custom" id="joinMeeting">Join</button>
-                </div>
-            </div>
-            <div>
-                <div class="camera">
-                    <video width=500 id="joiner" controls></video>
-                </div>
-            </div>
+            <!-- </form> -->
         </main>
     </div>
     <!-- Optional JavaScript -->
@@ -91,8 +110,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js" 
         integrity="sha512-AcZyhRP/tbAEsXCCGlziPun5iFvcSUpEz2jKkx0blkYKbxU81F+iq8FURwPn1sYFeksJ+sDDrI5XujsqSobWdQ==" 
         crossorigin="anonymous"></script>
-    <script src="../app/peer.js"></script>
-    <script src="../app/app.js"></script>
+    <script src="/app/peer.js"></script>
+    <script src="/app/main.js"></script>
 </body>
 
 </html>
