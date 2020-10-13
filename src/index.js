@@ -17,6 +17,9 @@ const io = socket(server);
 // Static files
 app.use(express.static(path.join(__dirname, "public")));
 
+// app.use(express.urlencoded());
+// app.use(express.json());
+
 function getUser(users){
     users.forEach(user => {
         return user.id;
@@ -32,6 +35,18 @@ users.map(user => {
         res.sendFile(__dirname + '/resources/meeting.html');
     });
 })
+
+io.on('connection', socket =>{
+    socket.on('CREATE_ROOM', data =>{
+        const arrRooms = [];
+        for(room in socket.adapter.rooms){
+            arrRooms.push(room);
+        }
+        
+        socket.join(data);
+        io.sockets.emit('SERVER_ROOMS', arrRooms);
+    })
+});
 
 
 // io.on('connection', socket => {

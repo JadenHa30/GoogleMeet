@@ -24,38 +24,35 @@ peer.on('open', (id) => {
     peerId = id;
 });
 
-function writePeerId(id) {
+//---------------POST----------------
+function createData(data) {
     const option = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(id),
+      body: JSON.stringify(data),
     };
     fetch(db, option)
       .then((res) => res.json())
       .then(data=>console.log(data));
 }
 
-const idRoom = "rjpml8acpm000000";
-const newUser = {userId: "12us82hdxsx"};
-function updateUser(id, newUser) {
-    const option = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newUser),
-    };
-    fetch(db + "/" + id, option)
-      .then((res) => res.json())
-      .then(data=>console.log("data is : ", data))
-      .catch(err => console.log("err is : ", err.message));
+//---------------POST----------------
+function update(id, data) {
+  const option = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  };
+  fetch(db + "/" + id, option)
+    .then((res) => res.json())
+    .then(data=>console.log(data));
 }
 
-updateUser(idRoom, newUser);
-
-
+//---------------GET----------------
 let room_data = [];
 function getData() {
     fetch(db)
@@ -63,37 +60,46 @@ function getData() {
       .then(data => room_data = data)
       .catch(err => console.log(err.message));
 }
+getData();
 
-function showRoomId(arr, id){
-    const html = arr.find(room => room.id==id);
-    $('#meetingId').append(`<p>${html}</p>`);
-}
 
-$('#newMeeting').click(()=>{
+$('#startMeeting').click(()=>{
     const format = {id: peerId, userId: [peerId]};
-    writePeerId(format);
-    getData();
+    createData(format);
+ 
+    $('.home').css('display','none');
+    $('.waiting').css('display','block');
+    openStream()
+        .then(stream=>{
+            playStream('localStream', stream);
+            $('#meetingId').append(`<p>${format.id}</p>`);
+            // $('#createRoom').attr('action', `${format.id}`);
+        });
+
+    
+});
+
+
+// // Call to someone
+$('#joinLink').click(()=>{
+
+  //create new data to update to server
+    const inputID = $('#inputId').val();
+    const data_filter = room_data.find(data => data.id == inputID);
+    console.log(data_filter);
+    const newUserIds = [...data_filter.userId, peerId];
+    room_data.map(data => {
+      return data.id == inputID ? (data.userId = newUserIds) : data;
+    });
+    const newData = room_data.find(data => data.id == inputID);
+    update(inputID, newData);
 
     $('.home').css('display','none');
     $('.waiting').css('display','block');
     openStream()
         .then(stream=>{
             playStream('localStream', stream);
-            const room = room_data.find(r => r.id = format.id);
-            $('#meetingId').append(`<p>${room.id}</p>`);
-            $('#createRoom').attr('action', `${format.id}`);
+            $('#meetingId').append(`<p>${data_filter.id}</p>`);
+            // $('#createRoom').attr('action', `${data_filter.id}`);
         });
-});
-
-// $('#newMeeting').click(()=>{
-//     $('#createRoom').attr('action', `${format.id}`);
-// });
-
-// $('#createRoom').attr('action',`${peerId}`);
-// Call to someone
-$('#join').click(()=>{
-    const inputID = $('#inputId').val();
-    const format = {id: inputID, userId: [peerId]};
-    updateUser(format.id, {userId: [peerId]});
-    // $('#joinForm').attr('action',`/${inputID}`);
 });

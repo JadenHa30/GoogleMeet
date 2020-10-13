@@ -48,16 +48,15 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" id="getIdMeeting" href="#"><i class="fas fa-paperclip"></i> Get link to share</a>
-                                <a class="dropdown-item" id="newMeeting"><i class="fas fa-plus"></i>Start instant meeting</a>
+                                <a class="dropdown-item" id="startMeeting"><i class="fas fa-plus"></i>Start instant meeting</a>
                             </div>
                         </div>
                         
     
-                        <form id="joinForm" method="GET">
                             <input type="text" class="input-group input-custom pt-1 pb-2" id="inputId"
                             placeholder="Enter meeting ID">
-                            <button class="btn btn-custom" id="join">Join</button>
-                        </form>
+                            <button class="btn btn-custom" id="joinLink">Join</button>
+
                     </div>
                     <div class="p-4 w-100">
                         <div class="tablet p-4">
@@ -68,22 +67,22 @@
             </div>
 
 
-            <!-- <form method="GET" id="createRoom"> -->
+            <form method="GET" id="createRoom">
                 <div class="waiting" style="display: none;">
                     <div class="d-flex justify-content-center">
                         <div class="camera m-auto">
                             <video id="localStream"></video>
                             <div class="wrap-btn-call">
-                                <button class="btn-call mute">
+                                <div class="btn-call mute">
                                     <i class="fas fa-microphone-slash" style="display: none;"></i>
                                     <i class="fas fa-microphone"></i>
-                                </button>
-                                <button class="btn-call stop">
+                                </div>
+                                <div class="btn-call stop">
                                     <i class="fas fa-phone-alt"></i>
-                                </button>
-                                <button class="btn-call hideCam">
+                                </div>
+                                <div class="btn-call hideCam">
                                     <i class="fas fa-video"></i>
-                                </button>
+                                </div>
                             </div>
                         </div>
                         <div class="info text-center m-auto pl-5">
@@ -93,7 +92,7 @@
                         </div>
                     </div>
                 </div>
-            <!-- </form> -->
+            </form>
         </main>
     </div>
     <!-- Optional JavaScript -->

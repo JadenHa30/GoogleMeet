@@ -1,13 +1,18 @@
 const socket = io();
 
+//Send to server
+
+socket.emit('CREATE_ROOM', peerId);
+
+
 //Listen data from server
 
 // socket.on('USER_ROOM', data => {
 //     $('#meetingId').html(data);
 // });
-// socket.on('SERVER_ROOMS', data => {
-//     data.map(room=>$('#currentRoom').append(`<p>Room: ${room}<p>`));
-// });
+socket.on('SERVER_ROOMS', data => {
+    data.map(room=>$('#currentRoom').append(`<p>Room: ${room}<p>`));
+});
 
 // -----------Stream------------
 
@@ -24,14 +29,14 @@ function playStream(idVideoEl, stream) {
 }
 
 openStream()
-    .then(stream=>playStream('localStream', stream));
+    .then(stream=>playStream('yourStream', stream));
 
 
 //Call
 $('#joinMeeting').click(()=>{
-     $('#localStream').css('width','100vw');
-     $('#localStream').css('width','100vw');
-     $('#localStream').css('height','100vh');
+     $('#yourStream').css('width','100vw');
+     $('#yourStream').css('width','100vw');
+     $('#yourStream').css('height','100vh');
      $('header').css('display','none');
      $('.container').removeClass('mt-5');
      $('.info').css('display','none');
