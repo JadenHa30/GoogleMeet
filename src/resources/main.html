@@ -67,32 +67,38 @@
             </div>
 
 
-            <form method="GET" id="createRoom">
-                <div class="waiting" style="display: none;">
-                    <div class="d-flex justify-content-center">
-                        <div class="camera m-auto">
-                            <video id="localStream"></video>
-                            <div class="wrap-btn-call">
-                                <div class="btn-call mute">
-                                    <i class="fas fa-microphone-slash" style="display: none;"></i>
-                                    <i class="fas fa-microphone"></i>
-                                </div>
-                                <div class="btn-call stop">
-                                    <i class="fas fa-phone-alt"></i>
-                                </div>
-                                <div class="btn-call hideCam">
-                                    <i class="fas fa-video"></i>
-                                </div>
-                            </div>
+            <div class="meeting" style="display: none;">
+                <div class="d-flex justify-content-center">
+                    <div class="camera m-auto">
+                        <video id="localStream"></video>
+                        <div class="wrap-btn-call">
+                            <button class="btn-call mute">
+                                <i class="fas fa-microphone-slash" style="display: none;"></i>
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <button class="btn-call stop">
+                                <i class="fas fa-phone-alt"></i>
+                            </button>
+                            <button class="btn-call hideCam">
+                                <i class="fas fa-video"></i>
+                            </button>
                         </div>
-                        <div class="info text-center m-auto pl-5">
-                            <h2>Meeting ready</h2>
-                            <div id="meetingId"></div>
-                            <button class="btn btn-custom" id="joinMeeting">Join</button>
+                    </div>
+
+                    <div id="cameraJoin"></div>
+
+                    <div class="info text-center m-auto pl-5">
+                        <h2>current room</h2>
+                        <div id="currentRoom"></div>
+                        <div>
+                            <hr>
+                            <div id="txtChat"></div>
+                            <input type="text" id="chat">
+                            <button id="sendTxt">send</button>
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
         </main>
     </div>
     <!-- Optional JavaScript -->

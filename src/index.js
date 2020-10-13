@@ -20,50 +20,43 @@ app.use(express.static(path.join(__dirname, "public")));
 // app.use(express.urlencoded());
 // app.use(express.json());
 
-function getUser(users){
-    users.forEach(user => {
-        return user.id;
-    });
-}
+// function getUser(users){
+//     users.forEach(user => {
+//         return user.id;
+//     });
+// }
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/resources/main.html');
 });
 
-users.map(user => {
-    app.get(`/${user.id}`, (req, res) => {
-        res.sendFile(__dirname + '/resources/meeting.html');
-    });
-})
+// users.map(user => {
+//     app.get(`/${user.id}`, (req, res) => {
+//         res.sendFile(__dirname + '/resources/meeting.html');
+//     });
+// })
 
 io.on('connection', socket =>{
     socket.on('CREATE_ROOM', data =>{
-        const arrRooms = [];
+        console.log("data: ",data);
+        socket.join(data.userPeer);
+        socket.userRoom = (data.inputLink == "") ? data.userPeer : data.inputLink;
+        console.log(socket.userRoom);
+
+        let arrRooms = [];
         for(room in socket.adapter.rooms){
             arrRooms.push(room);
         }
-        
-        socket.join(data);
-        io.sockets.emit('SERVER_ROOMS', arrRooms);
+        // console.log(socket.adapter.rooms);
+        // io.sockets.emit('SERVER_ROOMS', arrRooms);
+        socket.emit('CURRENT_ROOM', socket.userRoom);
+        console.log(socket.adapter.rooms);
     })
+
+    socket.on('CHAT',(data)=>{
+        io.sockets.in(socket.userRoom).emit('SERVER_TRANSFER_TEXT', data);
+    });
 });
 
 
-// io.on('connection', socket => {
-//     socket.on('CREATE_ROOM', data=>{
-//         const arrRooms = [];
-//         for(room in socket.adapter.rooms){
-//             arrRooms.push(room);
-//         }
-        
-//         socket.join(data.id);
-//         app.get(`/${data.id}`, (req, res) => {
-//             res.sendFile(__dirname + '/resources/meeting.html');
-//         });
-//         console.log("all rooms = ", socket.adapter.rooms);
 
-//         // answer to client
-//         io.sockets.emit('SERVER_ROOMS', arrRooms);
-//         socket.emit('USER_ROOM', data.id);
-//     });
-// });

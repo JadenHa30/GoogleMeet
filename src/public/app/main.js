@@ -1,4 +1,5 @@
 const db = "http://localhost:3000/users";
+const socket = io();
 
 //Create peer
 const peer = new Peer();
@@ -16,7 +17,9 @@ function playStream(idVideoEl, stream) {
     video.play();
 }
 
-
+function renderCam(id){
+  return $('#cameraJoin').append(`<video id="${id}"></video>`);
+}
 
 //Open peer
 peer.on('open', (id) => {
@@ -24,82 +27,73 @@ peer.on('open', (id) => {
     peerId = id;
 });
 
-//---------------POST----------------
-function createData(data) {
-    const option = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    };
-    fetch(db, option)
-      .then((res) => res.json())
-      .then(data=>console.log(data));
-}
+//-------------------------------Listen from server-------------------------------
 
-//---------------POST----------------
-function update(id, data) {
-  const option = {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  };
-  fetch(db + "/" + id, option)
-    .then((res) => res.json())
-    .then(data=>console.log(data));
-}
-
-//---------------GET----------------
-let room_data = [];
-function getData() {
-    fetch(db)
-      .then((res) => res.json())
-      .then(data => room_data = data)
-      .catch(err => console.log(err.message));
-}
-getData();
+// socket.on('SERVER_ROOMS', data => {
+//   $('#allRooms').html("");
+//   data.map(room=>$('#allRooms').append(`<p>Room: ${room}<p>`));
+// });
 
 
+socket.on('CURRENT_ROOM', data => {
+  $('#currentRoom').append(`<p>${data}<p>`);
+});
+
+
+socket.on('SERVER_TRANSFER_TEXT', data=>{
+  $('#txtChat').append(`<p>${data}<p>`);
+})
+
+//-------------------------------Emit to server-------------------------------
 $('#startMeeting').click(()=>{
-    const format = {id: peerId, userId: [peerId]};
-    createData(format);
- 
-    $('.home').css('display','none');
-    $('.waiting').css('display','block');
-    openStream()
+  const format = {userPeer: peerId, inputLink: ""};
+  socket.emit('CREATE_ROOM', format);
+
+  $('.home').css('display','none');
+  $('.meeting').css('display','block');
+  openStream()
         .then(stream=>{
             playStream('localStream', stream);
-            $('#meetingId').append(`<p>${format.id}</p>`);
-            // $('#createRoom').attr('action', `${format.id}`);
         });
-
-    
 });
 
-
-// // Call to someone
 $('#joinLink').click(()=>{
+      const inputID = $('#inputId').val();
+      const format = {userPeer: peerId, inputLink: inputID};
+      socket.emit('CREATE_ROOM', format);
 
-  //create new data to update to server
-    const inputID = $('#inputId').val();
-    const data_filter = room_data.find(data => data.id == inputID);
-    console.log(data_filter);
-    const newUserIds = [...data_filter.userId, peerId];
-    room_data.map(data => {
-      return data.id == inputID ? (data.userId = newUserIds) : data;
-    });
-    const newData = room_data.find(data => data.id == inputID);
-    update(inputID, newData);
+      $('.home').css('display','none');
+      $('.meeting').css('display','block');
+      openStream()
+        .then((stream) => {
+          playStream("localStream", stream); //this is a local stream in your computer
+          const call = peer.call(inputID, stream); //.call(insert the id want to call, providing our mediaStream)
 
-    $('.home').css('display','none');
-    $('.waiting').css('display','block');
-    openStream()
-        .then(stream=>{
-            playStream('localStream', stream);
-            $('#meetingId').append(`<p>${data_filter.id}</p>`);
-            // $('#createRoom').attr('action', `${data_filter.id}`);
-        });
+          renderCam(inputID);
+          //when receiver pick up the phone, we will play the stream from them
+          call.on("stream", (remoteStream) =>
+            playStream(inputID, remoteStream)
+          );
+        })
+        .catch((err) => console.log(err.message));
 });
+
+peer.on("call", (call) => {
+  openStream()
+    .then((stream) => {
+      call.answer(stream);
+      playStream("localStream", stream);
+
+      renderCam()
+      //stream from the caller
+      call.on("stream", (remoteStream) =>
+        playStream("remoteStream", remoteStream)
+      );
+    })
+    .catch((err) => console.log(err.message));
+});
+
+$('#sendTxt').click(()=>{
+  socket.emit('CHAT', $('#chat').val());
+});
+
