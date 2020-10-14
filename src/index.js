@@ -1,62 +1,40 @@
 const express = require("express");
-const socket = require("socket.io");
-const db = require("./database/db.json");
-const users = db.users;
-
-// App setup
-const path = require('path');
-const PORT = 3001;
 const app = express();
-const server = app.listen(PORT, function () {
-    console.log(`Listening on port ${PORT}`);
-    console.log(`http://localhost:${PORT}`);
- });
+const server = require('http').Server(app);
+const io = require("socket.io")(server);
 
-// Socket setup
-const io = socket(server);
-// Static files
+const path = require('path');
+const {v4: uuidV4} = require('uuid');
+
+//view engine
+app.set('view engine', 'ejs');
+app.set("views", path.join(__dirname, "resources", "views"));
 app.use(express.static(path.join(__dirname, "public")));
 
-// app.use(express.urlencoded());
-// app.use(express.json());
-
-// function getUser(users){
-//     users.forEach(user => {
-//         return user.id;
-//     });
-// }
-
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/resources/main.html');
+app.get('/', (req, res)=>{
+    res.render('home');
 });
 
-// users.map(user => {
-//     app.get(`/${user.id}`, (req, res) => {
-//         res.sendFile(__dirname + '/resources/meeting.html');
-//     });
-// })
+app.get('/meeting', (req, res)=>{
+    res.redirect(`/${uuidV4()}`);
+});
 
-io.on('connection', socket =>{
-    socket.on('CREATE_ROOM', data =>{
-        console.log("data: ",data);
-        socket.join(data.userPeer);
-        socket.userRoom = (data.inputLink == "") ? data.userPeer : data.inputLink;
-        console.log(socket.userRoom);
+app.get('/:room', (req, res)=>{
+    res.render('room', {roomId: req.params.room});
+});
 
-        let arrRooms = [];
-        for(room in socket.adapter.rooms){
-            arrRooms.push(room);
-        }
-        // console.log(socket.adapter.rooms);
-        // io.sockets.emit('SERVER_ROOMS', arrRooms);
-        socket.emit('CURRENT_ROOM', socket.userRoom);
-        console.log(socket.adapter.rooms);
-    })
+io.on('connection', socket=>{
+    socket.on('JOIN_ROOM', (roomId, userId)=>{
+        socket.join(roomId);
 
-    socket.on('CHAT',(data)=>{
-        io.sockets.in(socket.userRoom).emit('SERVER_TRANSFER_TEXT', data);
+        //send to a specific room, .broadcast means to all users in the room
+        socket.to(roomId).broadcast.emit('USER_CONNECTED', userId);
+
+        socket.on('disconnect',()=>{
+            socket.to(roomId).broadcast.emit('USER_DISCONNECT', userId);
+        })
     });
 });
 
-
+server.listen(3000);
 

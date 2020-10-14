@@ -6,14 +6,18 @@
   "scripts": {
     "start": "nodemon --inspect src/index.js",
     "watch": "node-sass --watch src/resources/scss --output src/public/css",
+    "peer-server": "node src/peer-server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Duong Ha",
   "license": "ISC",
   "dependencies": {
+    "ejs": "^3.1.5",
     "express": "^4.17.1",
     "node-sass": "^4.14.1",
-    "socket.io": "^2.3.0"
+    "peer": "^0.5.3",
+    "socket.io": "^2.3.0",
+    "uuid": "^8.3.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
