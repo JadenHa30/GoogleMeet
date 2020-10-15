@@ -15,24 +15,16 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-    <!-- -- --------------------HEADER-------------------- -- -->
-    <header>
-        <div class="logo d-flex pt-3 pl-3">
-            <img src="/img/meet.svg" class="icon" alt="">
-            <p><span>Cat</span> meet</p>
-        </div>
-    </header>
-
     <!-- -- --------------------MAIN-------------------- -- -->
 
     <main class="d-flex">
         <div id="localVideo">
             <div class="wrap-btn-call">
-                <button class="btn-call mute">
+                <button class="btn-call muteCall">
                     <i class="fas fa-microphone-slash" style="display: none;"></i>
                     <i class="fas fa-microphone"></i>
                 </button>
-                <button class="btn-call stop">
+                <button class="btn-call stopCall">
                     <i class="fas fa-phone-alt"></i>
                 </button>
                 <button class="btn-call hideCam">
@@ -40,6 +32,7 @@
                 </button>
             </div>
         </div>
+
         <div id="user-container">
             <div class="d-flex" id="options">
                 <div class="option" id="option1">
@@ -50,12 +43,12 @@
                 </div>
             </div>
             <div id="chat">
-                <div id="messTxt"></div>
+                <div id="messTxt" class="overflow-auto"></div>
                 <div class="d-flex" id="boxTxt">
                     <input type="text" id="inputTxt" placeholder="...Message">
-                    <div id="sendTxt">
+                    <button id="sendTxt" onclick="sendAction()">
                         <img src="/img/send.svg" alt="">
-                    </div>
+                    </button>
                 </div>
             </div>
             <div id="video-grid"></div>

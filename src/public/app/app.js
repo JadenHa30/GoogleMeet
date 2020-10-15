@@ -13,6 +13,7 @@ const myVideo = document.createElement('video');
 peer.on('open', id=>{
     console.log("peerid: ", id);
     socket.emit('JOIN_ROOM', ROOM_ID, id);
+    peerId = id;
 });
 
 //Open stream
@@ -68,8 +69,34 @@ openStream()
 socket.on('USER_DISCONNECT', userId=>{
     if(peers[userId]) peers[userId].close();
 });
+$('#stopCall').click(()=>{
+    $('#localCamContainer').attr('action','stop-call');
+});
 
-//Chat and video
+// ----------------CHAT-----------------
+const inputTxt = document.getElementById("inputTxt");
+const btnSend = document.getElementById("sendTxt")
+inputTxt.addEventListener("keyup", function(event) {
+    if (event.keyCode === 13 && inputTxt.value != "") {
+            event.preventDefault();
+            socket.emit('SEND_TEXT', peerId, inputTxt.value);
+            inputTxt.value = "";
+    }
+});
+
+function sendAction(){
+    if(inputTxt.value != ""){
+        socket.emit('SEND_TEXT', peerId, inputTxt.value);
+        inputTxt.value = "";
+    }
+}
+
+socket.on('SHOW_TEXT', (id, text) => {
+    const txt = '<p style="font-weight: bold; margin-bottom: 0rem;">' + id +'</p>'+'<p>' + text +'</p>';
+    $('#messTxt').append(txt);
+});
+
+//Option chat and video
 const chat = document.getElementById('chat');
 const option1 = document.getElementById('option1');
 const option2 = document.getElementById('option2');

@@ -23,9 +23,14 @@ app.get('/:room', (req, res)=>{
     res.render('room', {roomId: req.params.room});
 });
 
+app.get('/stop-call', (req,res)=>{
+    res.render('endPage');
+});
+
 io.on('connection', socket=>{
     socket.on('JOIN_ROOM', (roomId, userId)=>{
         socket.join(roomId);
+        socket.room = roomId;
 
         //send to a specific room, .broadcast means to all users in the room
         socket.to(roomId).broadcast.emit('USER_CONNECTED', userId);
@@ -34,6 +39,9 @@ io.on('connection', socket=>{
             socket.to(roomId).broadcast.emit('USER_DISCONNECT', userId);
         })
     });
+    socket.on('SEND_TEXT', (id, text) =>{
+        io.sockets.in(socket.room).emit('SHOW_TEXT', id, text);
+    })
 });
 
 server.listen(3000);
