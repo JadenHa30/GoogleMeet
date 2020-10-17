@@ -69,9 +69,12 @@ openStream()
 socket.on('USER_DISCONNECT', userId=>{
     if(peers[userId]) peers[userId].close();
 });
-$('#stopCall').click(()=>{
-    $('#localCamContainer').attr('action','stop-call');
-});
+// $('#stopCall').click(()=>{
+//     $('#localCamContainer').attr('action','stop-call');
+// });
+function stopCalling(){
+    console.log('stop');
+}
 
 // ----------------CHAT-----------------
 const inputTxt = document.getElementById("inputTxt");
