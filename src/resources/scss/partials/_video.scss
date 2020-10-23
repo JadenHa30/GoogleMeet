@@ -1,8 +1,15 @@
 #localVideo {
   position: relative;
-  width: 80vw;
+  width: 70vw;
   height: 90vh;
   overflow: hidden;
+
+  #extension {
+    position: absolute;
+    right: 10;
+    display: none;
+  }
+
   #localStream {
     width: 100%;
     height: 100%;
@@ -19,11 +26,14 @@
       background-color: transparent;
       position: absolute;
       bottom: 5%;
+      z-index: 100;
       &:hover {
         cursor: pointer !important;
         -webkit-box-shadow: inset 0px 0px 37px 28px rgba(0, 0, 0, 0.18);
         -moz-box-shadow: inset 0px 0px 37px 28px rgba(0, 0, 0, 0.18);
         box-shadow: inset 0px 0px 37px 28px rgba(0, 0, 0, 0.18);
+        z-index: 10;
+        border: solid 1px #ffb600;
       }
       i {
         color: #fff;
@@ -51,15 +61,23 @@
 }
 #user-container {
   display: block;
-  width: 30vw;
+  width: 40vw;
   height: 90vh;
   #options {
     width: 100%;
     height: 50px;
+    #hideChat {
+      height: 0%;
+      padding: 10px 0;
+      cursor: pointer;
+      img {
+        height: 100%;
+      }
+    }
     .option {
       width: 100%;
       overflow: hidden;
-      border-radius: 15px 15px 15px 0px;
+      // border-radius: 15px 15px 15px 15px;
       background-image: url("/img/gradient.jpg");
       cursor: pointer;
       -webkit-box-shadow: inset 0px 0px 53px -12px rgba(255, 111, 0, 0.75);
@@ -70,6 +88,10 @@
         height: 80%;
         padding-top: 3px;
       }
+    }
+    &:hover #hideChat {
+      height: 100%;
+      transition-duration: 500ms;
     }
   }
   #chat {
@@ -115,7 +137,7 @@
   #video-grid {
     max-width: 100%;
     max-height: 100%;
-    overflow: scroll;
+    // overflow: scroll;
     video {
       max-width: 100%;
       max-height: 100%;

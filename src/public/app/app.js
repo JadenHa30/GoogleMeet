@@ -69,11 +69,9 @@ openStream()
 socket.on('USER_DISCONNECT', userId=>{
     if(peers[userId]) peers[userId].close();
 });
-// $('#stopCall').click(()=>{
-//     $('#localCamContainer').attr('action','stop-call');
-// });
+
 function stopCalling(){
-    console.log('stop');
+    $('#localCamContainer').attr('action','stop');
 }
 
 // ----------------CHAT-----------------
@@ -97,10 +95,15 @@ function sendAction(){
 socket.on('SHOW_TEXT', (id, text) => {
     const txt = '<p style="font-weight: bold; margin-bottom: 0rem;">' + id +'</p>'+'<p>' + text +'</p>';
     $('#messTxt').append(txt);
+    $("#messTxt").animate({scrollTop: $("#messTxt").height()}, 800);
 });
-
+// ----------------ACTION-----------------
 //Option chat and video
 const chat = document.getElementById('chat');
+const extension = document.getElementById('extension');
+const userChat = document.getElementById('user-container');
+const hideChat = document.getElementById('hideChat');
+const openChat = document.getElementById('openChat');
 const option1 = document.getElementById('option1');
 const option2 = document.getElementById('option2');
 option1.onclick = function(){
@@ -111,4 +114,17 @@ option2.onclick = function(){
     chat.style.display = "none";
     videoGrid.style.display = "block";
 }
-
+hideChat.onclick = function(){
+    userChat.style.width = "0vw";
+    userChat.style.transitionDuration = "500ms";
+    videoLocal.style.width = "100vw";
+    videoLocal.style.transitionDuration = "500ms";
+    extension.style.display = "block";
+}
+openChat.onclick = function(){
+    userChat.style.width = "40vw";
+    userChat.style.transitionDuration = "500ms";
+    videoLocal.style.width = "70vw";
+    videoLocal.style.transitionDuration = "500ms";
+    extension.style.display = "none";
+}

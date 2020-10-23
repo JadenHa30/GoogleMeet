@@ -19,13 +19,15 @@ app.get('/meeting', (req, res)=>{
     res.redirect(`/${uuidV4()}`);
 });
 
+app.get('/stop', (req,res)=>{
+    res.render('endPage');
+});
+
 app.get('/:room', (req, res)=>{
     res.render('room', {roomId: req.params.room});
 });
 
-app.get('/stop-call', (req,res)=>{
-    res.render('endPage');
-});
+
 
 io.on('connection', socket=>{
     socket.on('JOIN_ROOM', (roomId, userId)=>{

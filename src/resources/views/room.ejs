@@ -17,28 +17,38 @@
 <body>
     <!-- -- --------------------MAIN-------------------- -- -->
 
-    <main class="d-flex">
-        <div id="localVideo">
-            <div class="wrap-btn-call">
-                <button class="btn-call muteCall">
-                    <i class="fas fa-microphone-slash" style="display: none;"></i>
-                    <i class="fas fa-microphone"></i>
-                </button>
-                <button class="btn-call stopCall" onclick="stopCalling()">
-                    <i class="fas fa-phone-alt"></i>
-                </button>
-                <button class="btn-call hideCam">
-                    <i class="fas fa-video"></i>
-                </button>
+    <main class="d-flex p-3">
+        <form id="localCamContainer" method="GET">
+            <div id="localVideo">
+                <div id="extension">
+                    <button class="btn btn-custom" id="openChat">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                </div>
+                <div class="wrap-btn-call">
+                    <button class="btn-call muteCall">
+                        <i class="fas fa-microphone-slash" style="display: none;"></i>
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    <button class="btn-call stopCall" onclick="stopCalling()">
+                        <i class="fas fa-phone-alt"></i>
+                    </button>
+                    <button class="btn-call hideCam">
+                        <i class="fas fa-video"></i>
+                    </button>
+                </div>
             </div>
-        </div>
+        </form>
 
         <div id="user-container">
             <div class="d-flex" id="options">
+                <div id="hideChat">
+                    <img src="/img/caret.svg" alt="">
+                </div>
                 <div class="option" id="option1">
                     <img src="/img/chat.svg" alt="">
                 </div>
-                <div class="option" id="option2">
+                <div class="option ml-1" id="option2">
                     <img src="/img/webcam1.svg" alt="">
                 </div>
             </div>
@@ -51,7 +61,7 @@
                     </button>
                 </div>
             </div>
-            <div id="video-grid"></div>
+            <div class="overflow-auto" id="video-grid"></div>
         </div>
     </main>
 
