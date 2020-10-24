@@ -6,8 +6,13 @@
 
   #extension {
     position: absolute;
-    right: 10;
+    right: 30px;
+    top: 5px;
     display: none;
+    z-index: 100;
+    #openChat {
+      z-index: 100;
+    }
   }
 
   #localStream {

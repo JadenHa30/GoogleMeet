@@ -30,7 +30,7 @@ function playLocalStream(video, stream) {
     video.srcObject = stream;
     video.play();
     videoLocal.append(video);
-    videoLocal.children[0].nextElementSibling.setAttribute('id','localStream');
+    videoLocal.children[1].nextElementSibling.setAttribute('id','localStream');
 }
 function connecToNewUser(userId, stream){
     const call = peer.call(userId, stream);
@@ -63,16 +63,6 @@ openStream()
             call.on('stream', userVideoStream => playRemoteStream(videoCaller,userVideoStream));
         });
     });
-
-
-//Disconnect
-socket.on('USER_DISCONNECT', userId=>{
-    if(peers[userId]) peers[userId].close();
-});
-
-function stopCalling(){
-    $('#localCamContainer').attr('action','stop');
-}
 
 // ----------------CHAT-----------------
 const inputTxt = document.getElementById("inputTxt");
@@ -127,4 +117,13 @@ openChat.onclick = function(){
     videoLocal.style.width = "70vw";
     videoLocal.style.transitionDuration = "500ms";
     extension.style.display = "none";
+}
+
+//Disconnect
+socket.on('USER_DISCONNECT', userId=>{
+    if(peers[userId]) peers[userId].close();
+});
+
+function stopCalling(){
+    $('#localCamContainer').attr('action','stop');
 }
