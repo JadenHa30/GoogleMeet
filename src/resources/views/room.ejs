@@ -15,9 +15,16 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
+    <!-- -- --------------------HEADER-------------------- -- -->
+    <!-- <header>
+        <div class="logo d-flex">
+            <img src="/img/meet.svg" class="icon" alt="">
+            <p><span>Cat</span> meet</p>
+        </div>
+    </header> -->
     <!-- -- --------------------MAIN-------------------- -- -->
 
-    <main class="d-flex p-3">
+    <main class="d-flex">
         <form id="localCamContainer" method="GET">
             <div id="localVideo">
                 <div id="extension">
@@ -26,14 +33,14 @@
                     </button>
                 </div>
                 <div class="wrap-btn-call">
-                    <button class="btn-call muteCall">
+                    <button class="btn-call" id="audioCall" onclick="muteUnmute()">
                         <i class="fas fa-microphone-slash" style="display: none;"></i>
                         <i class="fas fa-microphone"></i>
                     </button>
                     <button class="btn-call stopCall" onclick="stopCalling()">
                         <i class="fas fa-phone-alt"></i>
                     </button>
-                    <button class="btn-call hideCam">
+                    <button class="btn-call" id="webCam" onclick="hideWebcam()">
                         <i class="fas fa-video"></i>
                     </button>
                 </div>
@@ -49,7 +56,7 @@
                     <img src="/img/chat.svg" alt="">
                 </div>
                 <div class="option ml-1" id="option2">
-                    <img src="/img/webcam1.svg" alt="">
+                    <img src="/img/camera.svg" alt="">
                 </div>
             </div>
             <div id="chat">

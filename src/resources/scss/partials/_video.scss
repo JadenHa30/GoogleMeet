@@ -1,8 +1,9 @@
 #localVideo {
   position: relative;
   width: 70vw;
-  height: 90vh;
+  height: 100vh;
   overflow: hidden;
+  background: #000;
 
   #extension {
     position: absolute;
@@ -16,9 +17,11 @@
   }
 
   #localStream {
-    width: 100%;
+    max-width: 100%;
     height: 100%;
-    border-radius: 10px;
+    border-radius: 30px;
+    display: flex;
+    margin: auto;
   }
   .wrap-btn-call {
     display: none;
@@ -44,7 +47,7 @@
         color: #fff;
       }
     }
-    .muteCall {
+    #audioCall {
       left: 35%;
       transform: translate(-50%, 0);
     }
@@ -55,7 +58,7 @@
         color: #ff0000;
       }
     }
-    .hideCam {
+    #webCam {
       left: 65%;
       transform: translate(-50%, 0);
     }
@@ -63,14 +66,31 @@
   &:hover .wrap-btn-call {
     display: block;
   }
+  #hideLocalCam {
+    z-index: 1000;
+    background: #f8f9fa;
+    max-width: 100%;
+    height: 100%;
+    border-radius: 30px;
+    display: flex;
+    margin: auto;
+    text-align: center;
+  }
 }
 #user-container {
   display: block;
-  width: 40vw;
-  height: 90vh;
+  width: 35vw;
+  height: 100vh;
+  // margin-left: 10px;
+  background-color: #1e1d20;
+  overflow: hidden;
+  // border: 1px solid #d2d2d2;
+  // border-radius: 10px;
+  padding-top: 10px;
   #options {
     width: 100%;
     height: 50px;
+    background-color: #1e1d20;
     #hideChat {
       height: 0%;
       padding: 10px 0;
@@ -83,11 +103,11 @@
       width: 100%;
       overflow: hidden;
       // border-radius: 15px 15px 15px 15px;
-      background-image: url("/img/gradient.jpg");
+      // background-image: url("/img/gradient.jpg");
       cursor: pointer;
-      -webkit-box-shadow: inset 0px 0px 53px -12px rgba(255, 111, 0, 0.75);
-      -moz-box-shadow: inset 0px 0px 53px -12px rgba(255, 111, 0, 0.75);
-      box-shadow: inset 0px 0px 53px -12px rgba(255, 111, 0, 0.75);
+      // -webkit-box-shadow: inset 0px 0px 53px -12px rgba(255, 111, 0, 0.75);
+      // -moz-box-shadow: inset 0px 0px 53px -12px rgba(255, 111, 0, 0.75);
+      // box-shadow: inset 0px 0px 53px -12px rgba(255, 111, 0, 0.75);
       img {
         width: 100%;
         height: 80%;
@@ -101,18 +121,28 @@
   }
   #chat {
     display: none;
+
+    padding-bottom: 1px;
     #messTxt {
       max-width: 100%;
-      height: 80vh;
+      min-height: 83vh;
+      padding: 10px;
+      h6 {
+        color: #b5b5b5;
+      }
+      p {
+        color: #ffb600;
+      }
     }
     #boxTxt {
-      width: 100%;
+      max-width: 100%;
       max-height: 200px;
       -webkit-box-shadow: 1px -44px 56px -39px rgba(0, 0, 0, 0.26);
       -moz-box-shadow: 1px -44px 56px -39px rgba(0, 0, 0, 0.26);
       box-shadow: 1px -44px 56px -39px rgba(0, 0, 0, 0.26);
-      padding-top: 30px;
-      padding-bottom: 30px;
+      padding: 10px 10px;
+      margin: 0px 10px 10px 10px;
+      border-radius: 30px;
       #inputTxt {
         display: inline;
         width: 90%;
@@ -120,9 +150,11 @@
         outline: none;
         padding-left: 10px;
         border-bottom: 1px solid #ebebeb;
-
+        margin: 5px;
+        background: none;
         &:focus {
           border-bottom: 1px solid #ffb600;
+          color: #ffb600;
         }
       }
       #sendTxt {

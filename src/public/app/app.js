@@ -8,6 +8,7 @@ const peers = {};
 const videoLocal = document.getElementById('localVideo');
 const videoGrid = document.getElementById('video-grid');
 const myVideo = document.createElement('video');
+let myVideoStream;
 
 //Tell to server
 peer.on('open', id=>{
@@ -18,9 +19,10 @@ peer.on('open', id=>{
 
 //Open stream
 function openStream(){
-    const contraints = {audio: false, video: true};
+    const contraints = {audio: true, video: true};
     return navigator.mediaDevices.getUserMedia(contraints);
 }
+
 function playRemoteStream(video, stream) {
     video.srcObject = stream;
     video.play();
@@ -45,6 +47,7 @@ function connecToNewUser(userId, stream){
 
 openStream()
     .then(stream => {
+        myVideoStream = stream;
         playLocalStream(myVideo, stream);
  
         //Listen Server
@@ -63,6 +66,67 @@ openStream()
             call.on('stream', userVideoStream => playRemoteStream(videoCaller,userVideoStream));
         });
     });
+
+// ----------------CALL ACTION-----------------
+
+//Disconnect
+socket.on('USER_DISCONNECT', userId=>{
+    if(peers[userId]) peers[userId].close();
+});
+
+function stopCalling(){
+    $('#localCamContainer').attr('action','stop');
+}
+
+//Hide cam and mute mic
+function hideWebcam(){
+    event.preventDefault();
+    const enabled = myVideoStream.getVideoTracks()[0].enabled;
+    if (enabled) {
+      myVideoStream.getVideoTracks()[0].enabled = false;
+      setHideCamButton();
+    } else {
+      myVideoStream.getVideoTracks()[0].enabled = true;
+      setShowCamButton();
+    }
+}
+function muteUnmute(){
+    event.preventDefault();
+    const enabled = myVideoStream.getAudioTracks()[0].enabled;
+    if (enabled) {
+        myVideoStream.getAudioTracks()[0].enabled = false;
+        setMuteButton();
+    } else {
+        myVideoStream.getAudioTracks()[0].enabled = true;
+        setUnmuteButton();
+    }
+}
+
+const camButton = document.getElementById('webCam');
+const audioButton = document.getElementById('audioCall');
+function setHideCamButton(){
+    camButton.children[0].remove();
+    const html = `<i class="fas fa-video-slash"></i>`;
+    camButton.innerHTML = html;
+}
+function setShowCamButton(){
+    camButton.children[0].remove();
+    const html = `<i class="fas fa-video"></i>`;
+    camButton.innerHTML = html;
+}
+function setMuteButton(){
+    audioButton.children[0].remove();
+    const html = `<i class="fas fa-microphone-slash"></i>`;
+    audioButton.innerHTML = html;
+}
+function setUnmuteButton(){
+    audioButton.children[0].remove();
+    const html = `<i class="fas fa-microphone"></i>`;
+    audioButton.innerHTML = html;
+}
+
+
+
 
 // ----------------CHAT-----------------
 const inputTxt = document.getElementById("inputTxt");
@@ -83,11 +147,12 @@ function sendAction(){
 }
 
 socket.on('SHOW_TEXT', (id, text) => {
-    const txt = '<p style="font-weight: bold; margin-bottom: 0rem;">' + id +'</p>'+'<p>' + text +'</p>';
+    const userId = id.slice(9, 13);
+    const txt = '<h6 style="font-weight: bold; margin-bottom: 0rem;"> user ' + userId +'</h6>'+'<p>' + text +'</p>';
     $('#messTxt').append(txt);
     $("#messTxt").animate({scrollTop: $("#messTxt").height()}, 800);
 });
-// ----------------ACTION-----------------
+// ---------------- CHAT ACTION-----------------
 //Option chat and video
 const chat = document.getElementById('chat');
 const extension = document.getElementById('extension');
@@ -111,7 +176,8 @@ hideChat.onclick = function(){
     videoLocal.style.transitionDuration = "500ms";
     extension.style.display = "block";
 }
-openChat.onclick = function(){
+openChat.onclick = function(event){
+    event.preventDefault();
     userChat.style.width = "40vw";
     userChat.style.transitionDuration = "500ms";
     videoLocal.style.width = "70vw";
@@ -119,11 +185,3 @@ openChat.onclick = function(){
     extension.style.display = "none";
 }
 
-//Disconnect
-socket.on('USER_DISCONNECT', userId=>{
-    if(peers[userId]) peers[userId].close();
-});
-
-function stopCalling(){
-    $('#localCamContainer').attr('action','stop');
-}
